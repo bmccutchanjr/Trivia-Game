@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
     <head>
         <meta charset="UTF=8">
         <meta name="viewport"
@@ -15,32 +15,50 @@
 
     <body>
         <div class="wrapper">
-            <main>
-                <h1>TOTALLY TRIVIAL TRIVIA</h1>
+            <h1>TOTALLY TRIVIAL TRIVIA</h1>
 
-                <article class="intro">
+            <main>
+                <section id="intro">
+                    <a href="#" class="button" id="start-quiz">START QUIZ</a>
+                    <div class="intro-count"></div>
+                </section>
+
+                <section id="quiz">
                     <h2>Question #1</h2>
 
-                    <p>If there's a bustle in your hedgerow, don't be alarmed.  It's just a spring clean for who?</p>
+                    <div class="inner-main">
+                        <p id="question">placeholder text</p>
 
-                    <div class="option-row" row=1>
-                        <div class="key">1</div>
-                        <div class="click">The African Queen</div>
+                        <div id="options">
+                            <div class="option-row" row=1>
+                                <div class="key" option=0>1</div>
+                                <div class="click" option=0>placeholder</div>
+                            </div>
+                            <div class="option-row" row=2>
+                                <div class="key" option=1>2</div>
+                                <div class="click" option=1>placeholder</div>
+                            </div>
+                            <div class="option-row" row=3>
+                                <div class="key" option=2>3</div>
+                                <div class="click" option=2>placeholder</div>
+                            </div>
+                            <div class="option-row" row=4>
+                                <div class="key" option=3>4</div>
+                                <div class="click" option=3>placeholder</div>
+                            </div>
+                        </div>
+                        
+                        <div id="explanation">explain</div>
                     </div>
-                    <div class="option-row" row=2>
-                        <div class="key">2</div>
-                        <div class="click">The Queen Mary</div>
-                    </div>
-                    <div class="option-row" row=3>
-                        <div class="key">3</div>
-                        <div class="click">The May Queen</div>
-                    </div>
-                    <div class="option-row" row=4>
-                        <div class="key">4</div>
-                        <div class="click">Queen</div>
-                    </div>
-                </article>
+                </section>
             </main>
+
+            <section id="game-over">
+                <h2>GAME OVER</h2>
+                <div id="game-stats"></div>
+                <a href="#" class="button" id="try-again">TRY AGAIN</a>
+                <div class="intro-count"></div>
+            </section>
 
             <div class="push"></div>
         </div>
