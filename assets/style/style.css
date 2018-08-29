@@ -5,85 +5,47 @@
 }
 
 :root
-{   --header-font: "Snowburst One", sans-serif;
+{   --header-bg-color: pink;
+    --header-brd-color: white;
+    --header-fg-color: red;
+    --header-font: "Snowburst One", sans-serif;
     --text-color: black;
 }
 
 body
-{   background: url("../images/128-50.jpg");
+{   background: url("../images/128-51.jpg");
+    color: var(--text-color);
     font-family: sans-serif;
     font-size: 20px;
     margin: 0px;
     padding: 0px;
 }
 
-h1, h2
-{   font-family: var(--header-font);
-    font-size: 40px;
-    font-weight: bold;
-    margin: 0px;
-    text-align: center;
-}
-
-h2
-{   font-size: 30px;
-    font-weight: normal;
-}
-
-main
-{   background: rgba(0, 255, 0, 0.5);
-    height: auto;
-    margin: 0px auto;
-    overflow: auto;
-    padding: 25px;
-    /* position: relative;
-    top: 10%; */
-}
-
-#intro
-{   text-align: center;
-}
-
-.button
-{   background: blue;
-    border: 1px solid blue;
-    border-radius: 30px;
-    color: black;
-    font-family: var(--header-font);
-    font-size: 20px;
-    margin: 0px auto;
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    text-decoration: none;
-}
-
-.button:hover
-{   background: white;
-}
-
-#intro .count
-{   color: white;
-    font-size: 30px;
-    height: auto;
-    overflow: auto;
-    text-align: center;
-}
+/* begin style for main game elements
+*/
 
 #quiz
 {   display: none;
+    position: relative;
 }
 
 .inner-main
-{   background: rgba(0, 0, 255, 0.5);
+{   background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--header-brd-color);
+    border-radius: 5px;
     overflow: auto;
     padding: 25px;
 }
 
-#options, #explanation
-{   background: purple;
-    float: left;
-    width: 50%;
+#options
+{   float: left;
+    width: 40%;
+}
+
+#explanation
+{   float: left;
+    padding-left: 20px;
+    width: 60%;
 }
 
 .option-row
@@ -91,10 +53,9 @@ main
     margin: 0px auto;
     margin-bottom: 5px;
     overflow: auto;
-    /* width: 358px; */
 }
 
-.click, .key
+.key
 {   background: #ffff88;
     border: 2px solid black;
     border-radius: 5px;
@@ -108,8 +69,15 @@ main
 }
 
 .click
-{   text-align: left;
-    width: 300px;
+{   overflow: auto;
+    background: #ffff88;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 20px;
+    height: auto;
+    padding: 5px;
+    text-align: left;
 }
 
 .key
@@ -117,17 +85,96 @@ main
 }
 
 .click:hover, .key:hover
-{   box-shadow: 0px 0px 20px red;
-}
- 
-.click:active, .key:active
 {   background: white;
 }
 
-#game-over
-{   display: none;
-    text-align: left;
+/* end style for main game elements
+*/
+
+/* begin style for miscellaneous elements
+*/
+
+h1
+{   background: var(--header-bg-color);
+    border: 2px solid var(--header-brd-color);
+    border-radius: 5px;
+    color: var(--header-fg-color);
+    font-family: var(--header-font);
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 10px;
+    text-align: center;
 }
+
+h2
+{   color: var(--header-fg-color);
+    font-family: var(--header-font);
+    font-size: 30px;
+    font-weight: normal;
+    margin: 0px;
+    text-align: center;
+}
+
+#intro
+{   text-align: center;
+}
+
+#game-over
+{   background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--header-brd-color);
+    border-radius: 5px;
+    color: black;
+    display: none;
+    text-align: center;
+}
+
+input
+{   background: var(--header-bg-color);
+    border: 1px solid var(--header-brd-color);
+    border-radius: 30px;
+    color: var(--header-fg-color);
+    font-family: var(--header-font);
+    font-size: 20px;
+    margin: 0px auto;
+    margin-top: 25px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-decoration: none;
+}
+
+input:hover
+{   background: white;
+}
+
+.counter
+{   align-items: center;
+    height: auto;
+    overflow: auto;
+    padding: 5px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: auto;
+}
+
+.get-ready-counter
+{   color: var(--header-fg-color);
+    display: none;
+    font-size: 50px;
+    font-weight: bold;
+    justify-content: center;
+    height: auto;
+    overflow: auto;
+    position: fixed;
+    text-align: center;
+    top: 40%;
+    width: 100%;
+}
+
+/* end style for miscellaneous elements
+*/
 
 /* begin style for the sticky footer
 */
@@ -137,27 +184,27 @@ body, html
 }
 
 .wrapper
-{   background: rgba(255, 0, 0, 0.5);
-    height: auto;
+{   height: auto;
     margin: 0px;
-    margin-bottom: -33px;
+    margin-bottom: -23px;
     min-height: 100%;
-    padding: 75px;
-    /* position: relative; */
+    padding-bottom: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 5%;
 }
 
 .push
-{   background: yellow;
-    height: 33px;
+{   height: 23px;
 }
 
 footer
-{   background: pink;
-    border: 1px solid black;
-    border-radius: 5px;
+{   background: var(--header-bg-color);
+    border-top: 3px double var(--header-brd-color);
+    color: white;
     font-family: sans-serif;
     font-size: 10px;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
 }
 
@@ -167,26 +214,23 @@ footer
 /* media queries defaulting to Bootstrap breakpoints
 */
 
-@media screen and (max-width: 992px)
-{   .wrapper
-    {   background: rgba(255, 0, 0, 0.25);
-    }
-}
-
 @media screen and (max-width: 768px)
 {   .wrapper
-    {   background: rgba(0, 255, 0, 0.25);
+    {   padding: 5%;
+    }
+
+    #options
+    {   width: 50%;
+    }
+    
+    #explanation
+    {   width: 50%;
     }
 }
 
 @media screen and (max-width: 572px)
 {   .wrapper
-    {   background: rgba(0, 0, 255, 0.25);
-        padding: 10px;
-    }
-
-    body
-    {   font-size: 14px;
+    {   padding: 10px;
     }
 
     h1
@@ -201,15 +245,18 @@ footer
     {   font-size: 16px;
     }
 
-    main, #quiz, .inner-main, #options, #explanation
-    {   padding: 0px;
+    #quiz, .inner-main, #options, #explanation
+    {   padding: 10px;
         width: 100%;
     }
 
+    .counter
+    {   right: 0px;
+        top: 0px;
+    }
+
     .click, .key
-    {   font-size: 14px;
-        height: auto;
+    {   height: auto;
         overflow: auto;
-        /* margin-bottom: 5px; */
     }
 }

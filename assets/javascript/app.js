@@ -7,7 +7,7 @@ var questions =
                 "Queen"
             ],
             answer: 2,
-            explain: "'Stairway to Heaven' by Led Zeppelin was released in 1971."
+            explain: "Led Zeppelin released 'Stairway to Heaven' in 1971."
         },
         {   text: "Who 'jumped so high and then lightly touched down'?",
             options:
@@ -113,7 +113,8 @@ var wrongAnswers = 0;
 var timedOut = 0;
 
 // variables for the question timer
-var counter = 20;                  // The count down limit -- 20 seconds
+var defaultCounter = 15;           // used to reset the counter
+var counter = 15;                  // The count down timer
 var questionInterval;              // The interval for the question timeout counter
 var questionActive = false;
 
@@ -150,8 +151,8 @@ function gameOver()
         $("#game-stats").append("<h3>Hello!  Are you awake?</h2>");
     if (correctAnswers > 8)
         $("#game-stats").append("<h3>Whoa!  You're good!</h3>");
-    if (wrongAnswers > 8)
-        $("#game-stats").append("<h3>Are you guessing?</h3>");
+    if (wrongAnswers > 5)
+        $("#game-stats").append("<h3>Come now, are you guessing?</h3>");
 
     $("#game-stats").append("<p>You got " + correctAnswers + " questions correct.</p>");
     $("#game-stats").append("<p>You got " + wrongAnswers + " questions wrong.</p>");
@@ -166,24 +167,31 @@ function gameOver()
 }
 
 function countDown()
-{   counter--;
+{   // counter--;
 
     if (counter > 0)
-    {   // There's nothing to do here yet
-        if (counter < 4)
+    {   if (counter < 4)
         {   beep.load();
             beep.play();
         }
+
+        $(".counter").text(counter + " seconds");
+        $(".counter").css("display", "block");
+        --counter;
     }
     else
     {   // Whatever else happens here...the interval should be cleared
-
         clearInterval(questionInterval);
       
         buzz.load();
         buzz.play();
 
-        ++timedOut;
+        $(".counter").text(counter + " seconds");
+
+        ++timedOut;     // increment the question timed out counter
+
+        // hide the count down timer
+        $(".counter").css("display", "none");
 
         // the interval timed out without the player selecting an answer -- display the answer
 
@@ -208,22 +216,32 @@ function countDown()
 function setTimer()
 {   clearInterval(questionInterval);
 
-//     counter = 20;
-    counter = 5;
+    counter = defaultCounter;
+
     questionInterval = setInterval(countDown, 1000);
 }
 
 function displayQuestion()
-{   //
+{   // This function loads each question on the screen and performs some additional functions
+    // to clean up the screen
+
+    // I don't want .get-ready-counter on the screen any longer, but I can't hide it in readyCounter() 
+    // because of the delay before executing this function.  I'll have to hide it here, even though this
+    // line of code will execute each time any question is loaded -- even when .get-ready-counter is
+    // already hidden.  I could code for that, but the over head to hide the element is small, so I'll
+    // leave it
+    $(".get-ready-counter").css("display", "none");
 
     if (questionCount<0)
-    {   // game over
+    {   // The game is over once the player responds to the last question, or the last question
+        // times out.  Neither on those events occurs here, so there really isn't anything to do here
 
         clearInterval(questionInterval);
     }
     else
     {   // change the question <h2> text
         $("#quiz h2").text("Question #" + (questionCount + 1));
+        $(".counter").text(counter + " remaining");
 
         // Display the question
         $("#question").text(questions[qIndex[questionCount]].text);
@@ -293,12 +311,22 @@ function readyCount()
     beep.load();
     beep.play();    
         
-    $(".intro-count").text(readyCounter);
+    $(".get-ready-counter").text(readyCounter);
+    $(".get-ready-counter").css("opacity", 1.0);
+    $(".get-ready-counter").css("font-size", "50px");
+    $(".get-ready-counter").animate({opacity: 0.1, fontSize: "20px"}, 800);
     
     if (readyCounter > 1)
-        setTimeout(readyCount, 1000);
+    {   setTimeout(readyCount, 1000);
+    }
     else
+    {   // I don't need (or want) .get-ready-counter any longer, but I can't hide it here because of the
+        // delay before loading the first question.  I'll have to hide it in displayQuestion() even though
+        // that means hiding a hidden element every time after the first.
+    
+        // get the first question
         setTimeout(displayQuestion, 1000);
+    }
 
     readyCounter--;
 }
@@ -308,18 +336,21 @@ function initReadyCount()
 
     beep.load();
     beep.play();    
-        
-    $(".intro-count").text("GET READY!");
+
+    $(".get-ready-counter").css("display", "block");
+
+    $(".get-ready-counter").text("GET READY!");
+    $(".get-ready-counter").css("opacity", 1.0);
+    $(".get-ready-counter").css("fontSize", "50px");
+    $(".get-ready-counter").animate({opacity: 0.1, fontSize: "20px"}, 800);
     
     readyCounter = 3;
     setTimeout(readyCount, 1000);
 }
 
 function newGame()
-{   // hide the introduction screen
-    // $("#intro").css("display", "none");
+{   // Initialize the game
 
-    // Initialize the game
     randomizeIndex();
 
     // reset game statistics
@@ -328,15 +359,6 @@ function newGame()
     wrongAnswers = 0;
     timedOut = 0;
 
-//     // count down to the first question
-//     $(".intro-count").text("Get ready!");
-// 
-//     readyCounter = 4;
-// 
-//     beep.load();
-//     beep.play();    
-//         
-//     setTimeout(readyCount, 1000);
     initReadyCount();
 }
 
@@ -347,6 +369,7 @@ function answerIt (selected)
     // It's possible for the player to click on options between questions (the time the answer is displayed
     // on the screen).  That's not good, so prevent it...
     if (!questionActive) return;
+
     questionActive = false;
 
     // first...if this fired, the player beat the timer...make sure of it
@@ -356,7 +379,12 @@ function answerIt (selected)
     if ($(".click[option=" + selected + "]").attr("answer") === "correct")
     {   // the answer is correct
 
-        ++correctAnswers;
+        // hide the counter while this screen is displayed
+        $(".counter").css("display", "none");
+
+        // let the player know they got it right
+
+        ++correctAnswers;       // increment the correct answer count
 
         $("#explanation").html("<h2>Hooray!  You got this one right</h2>");
         $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[questionCount - 1]].explain + "</p>");
@@ -367,9 +395,14 @@ function answerIt (selected)
         ting.play();
     }
     else
-    {   // the answer is correct
+    {   // the answer is incorrect
 
-        ++wrongAnswers;
+        // hide the counter while this screen is displayed
+        $(".counter").css("display", "none");
+
+        // let the player know they were wrong\
+
+        ++wrongAnswers;     // increment the wrond answer count
 
         $("#explanation").html("<h2>Oh no!  You got this one wrong!</h2>");
         $("#explanation").html($("#explanation").html() + "<p>The correct answer is '" + $(".click[answer=correct]").text() + "'</p>");
