@@ -25,14 +25,17 @@ body
 */
 
 #quiz
-{   display: none;
+{   background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--header-brd-color);
+    border-radius: 5px;
+    display: none;
     position: relative;
 }
 
 .inner-main
-{   background: rgba(255, 255, 255, 0.5);
+{   /* background: rgba(255, 255, 255, 0.5);
     border: 2px solid var(--header-brd-color);
-    border-radius: 5px;
+    border-radius: 5px; */
     overflow: auto;
     padding: 25px;
 }
@@ -117,7 +120,10 @@ h2
 }
 
 #intro
-{   text-align: center;
+{   background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--header-brd-color);
+    border-radius: 5px;
+    text-align: center;
 }
 
 #game-over
@@ -187,7 +193,7 @@ body, html
 .wrapper
 {   height: auto;
     margin: 0px;
-    margin-bottom: -23px;
+    margin-bottom: -24px;
     min-height: 100%;
     padding-bottom: 5%;
     padding-left: 10%;
@@ -196,7 +202,7 @@ body, html
 }
 
 .push
-{   height: 23px;
+{   height: 24px;
 }
 
 footer

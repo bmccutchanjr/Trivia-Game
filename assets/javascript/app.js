@@ -104,8 +104,8 @@ var questions =
 // index array to the questions.  This lets me randomize the order of questions when the player
 // replays the quiz.
 
-var qIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-var questionCount = 0;
+var qIndex = [];                    // An array of indices used to randomize the order of the questions
+var qCount = 0;
 
 // the quiz statistics
 var correctAnswers = 0;
@@ -126,9 +126,16 @@ var ting = new Audio("assets/audio/ting.mp3");
 function randomizeIndex()
 {   // randomize the order of the question index so the quiz isn't exectly the same every time
 
+    // To make the application more scalable, the qIndex array is created from scratch rather than
+    // hardcoding it.  This makes it possible to add or remove questions without having to change
+    // any of the code.
+
+    for (var i=0; i<questions.length; i++)
+    {   qIndex [i] = i;
+    }
+
     for (var i=9; i>=0; i--)
-    {
-        // randomly select some index from the first i elements in the array
+    {   // randomly select some index from the first i elements in the array
         var randomIndex = Math.floor(Math.random(i) * 10);
 
         // save the value of the element at randomIndex
@@ -197,12 +204,12 @@ function countDown()
 
         $("#explanation").html("<h2>You didn't answer</h2>");
         $("#explanation").html($("#explanation").html() + "<p>The correct answer is '" + $(".click[answer=correct]").text() + "'</p>");
-        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[questionCount - 1]].explain + "</p>");
+        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[qCount - 1]].explain + "</p>");
         $(".click[answer=correct]").css("background", "#88ff88");
         $(".key[answer=correct]").css("background", "#88ff88");
 
         // and then do the next question or end the game
-        if (questionCount < qIndex.length)
+        if (qCount < qIndex.length)
         {   // the quiz isn't over -- next question
             setTimeout(displayQuestion, 5000);
         }
@@ -232,7 +239,7 @@ function displayQuestion()
     // leave it
     $(".get-ready-counter").css("display", "none");
 
-    if (questionCount<0)
+    if (qCount<0)
     {   // The game is over once the player responds to the last question, or the last question
         // times out.  Neither on those events occurs here, so there really isn't anything to do here
 
@@ -240,24 +247,24 @@ function displayQuestion()
     }
     else
     {   // change the question <h2> text
-        $("#quiz h2").text("Question #" + (questionCount + 1));
+        $("#quiz h2").text("Question #" + (qCount + 1));
         $(".counter").text(counter + " remaining");
 
         // Display the question
-        $("#question").text(questions[qIndex[questionCount]].text);
+        $("#question").text(questions[qIndex[qCount]].text);
         $("#explanation").text("");
 
         // randomize the answers
 
         var tempArray = [];
-        for (var i=0; i<questions[qIndex[questionCount]].options.length; i++)
-        {   tempArray[i] = questions[qIndex[questionCount]].options[i];
+        for (var i=0; i<questions[qIndex[qCount]].options.length; i++)
+        {   tempArray[i] = questions[qIndex[qCount]].options[i];
         };
 
         // save the text for the correct answer
-        var saveText = questions[qIndex[questionCount]].options[questions[qIndex[questionCount]].answer];
+        var saveText = questions[qIndex[qCount]].options[questions[qIndex[qCount]].answer];
 
-        questionCount++;
+        qCount++;
 
         for (var i=0; i<4; i++)
         {   var randomIndex = Math.floor(Math.random() * tempArray.length);
@@ -354,7 +361,7 @@ function newGame()
     randomizeIndex();
 
     // reset game statistics
-    questionCount = 0;
+    qCount = 0;
     correctAnswers = 0;
     wrongAnswers = 0;
     timedOut = 0;
@@ -387,7 +394,7 @@ function answerIt (selected)
         ++correctAnswers;       // increment the correct answer count
 
         $("#explanation").html("<h2>Hooray!  You got this one right</h2>");
-        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[questionCount - 1]].explain + "</p>");
+        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[qCount - 1]].explain + "</p>");
         $(".click[answer=correct]").css("background", "#88ff88");
         $(".key[answer=correct]").css("background", "#88ff88");
 
@@ -406,7 +413,7 @@ function answerIt (selected)
 
         $("#explanation").html("<h2>Oh no!  You got this one wrong!</h2>");
         $("#explanation").html($("#explanation").html() + "<p>The correct answer is '" + $(".click[answer=correct]").text() + "'</p>");
-        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[questionCount - 1]].explain + "</p>");
+        $("#explanation").html($("#explanation").html() + "<p>" + questions[qIndex[qCount - 1]].explain + "</p>");
         $(".click[option=" + selected + "]").css("background", "#ff8888");
         $(".click[answer=correct]").css("background", "#88ff88");
         $(".key[option=" + selected + "]").css("background", "#ff8888");
@@ -417,7 +424,7 @@ function answerIt (selected)
     }
 
     // and then do the next question or end the game
-    if (questionCount < qIndex.length)
+    if (qCount < qIndex.length)
     {   // the quiz isn't over -- next question
         setTimeout(displayQuestion, 5000);
     }
